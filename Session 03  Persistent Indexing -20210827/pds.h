@@ -30,6 +30,8 @@ struct PDS_RepoInfo{
 
 extern struct PDS_RepoInfo repo_handle;
 
+int pds_create(char *repo_name);
+
 // pds_open
 // Open the data file and index file in rb+ mode
 // Update the fields of PDS_RepoInfo appropriately

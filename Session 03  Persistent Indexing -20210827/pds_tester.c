@@ -9,7 +9,7 @@
 
 void process_line( char *test_case );
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	FILE *cfptr;
 	char test_case[50];
