@@ -33,8 +33,9 @@ struct BST_Node *bst_search( struct BST_Node *root, int key )
 	if( root == NULL ){
 		return NULL;
 	}
-	else if( root->key == key )
+	else if( root->key == key ) {
 		return root;
+	}
 	else if( key < root->key )
 		return bst_search( root->left_child, key );
 	else if( key > root->key )

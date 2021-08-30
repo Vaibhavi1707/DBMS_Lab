@@ -8,7 +8,6 @@
 
 struct PDS_RepoInfo repo_handle;
 
-
 int pds_create(char *repo_name)
 {
   FILE *pdsData = fopen(repo_name, "w+"); 
@@ -67,9 +66,11 @@ int put_rec_by_key(int key, void*rec)
     
     // Create an index entry with the current data file location using ftell
     int offset = ftell(repo_handle.pds_data_fp);
-
+    struct PDS_NdxInfo *ndxInfo = malloc(sizeof(struct PDS_NdxInfo));
+    ndxInfo->key = key;
+    ndxInfo->offset = offset;
     // Add index entry to BST using offset returned by ftell
-    bst_add_node(&repo_handle.pds_bst, key, &offset);
+    bst_add_node(&repo_handle.pds_bst, key, ndxInfo);
 
     // write key to file
     int status_key_write = fwrite(&key, sizeof(int), 1, repo_handle.pds_data_fp);
@@ -87,28 +88,42 @@ int put_rec_by_key(int key, void*rec)
 
 int get_rec_by_key(int key, void*rec)
 {
-  // // Search for index entry in BST
-  // struct BSTNode* found;
-  // found = bst_search(&repo_handle.pds_bst, key);
-  // // Seek to the file location based on offset in index entry
-  // fseek(repo_handle.pds_data_fp, found->data->offset, SEEK_SET);
-  // // Read the key at the current file location 
-  // int stored_key;
-  // fread(&stored_key, sizeof(int), 1, repo_handle.pds_data_fp);      
-  // // Read the record after reading the key
-  // fread(rec, repo_handle.rec_size, 1, repo_handle.pds_data_fp);
-  // // return success
-  // return PDS_SUCCESS;
+  // Search for index entry in BST
+  struct PDS_NdxInfo* ndxInfo = malloc(sizeof(struct PDS_NdxInfo));
+  
+  if (bst_search(repo_handle.pds_bst, key) == NULL) {
+    return PDS_REC_NOT_FOUND;
+  }
+  
+  ndxInfo = (bst_search(repo_handle.pds_bst, key))->data;
+  // Seek to the file location based on offset in index entry
+  fseek(repo_handle.pds_data_fp, ndxInfo->offset, SEEK_SET);
+  
+  // Read the key at the current file location 
+  int stored_key;
+  fread(&stored_key, sizeof(int), 1, repo_handle.pds_data_fp);      
+  
+  // Read the record after reading the key
+  fread(rec, repo_handle.rec_size, 1, repo_handle.pds_data_fp);
+  
+  // return success
+  return PDS_SUCCESS;
 }
 
-
+// void rewriteNdx(struct BSTNode* root) {
+//   if (root) {
+//     fwrite(root->data, sizeof(struct PDS_NdxInfo), 1, repo_handle.pds_ndx_fp);
+//     rewriteNdx(root->left);
+//     rewriteNdx(root->right);
+//   }
+// }
 
 int pds_close()
 {
   // Open the index file in wb mode (write mode, not append mode)
   FILE* ndxFile = fopen(strcat(repo_handle.pds_name, "ndx"), "wb");
   // Unload the BST into the index file by traversing it in PRE-ORDER (overwrite the entire index file)
-  // *TODO*
+  // rewriteNdx(repo_handle.pds_bst);
   // Free the BST by calling bst_destroy()
   bst_destroy(repo_handle.pds_bst);
   // Close the index file and data file
