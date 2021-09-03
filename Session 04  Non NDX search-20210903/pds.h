@@ -10,6 +10,7 @@
 #define PDS_NDX_SAVE_FAILED 13
 #define PDS_REPO_NOT_OPEN 14
 
+
 // Repository status values
 #define PDS_REPO_OPEN 10
 #define PDS_REPO_CLOSED 11
@@ -30,7 +31,7 @@ struct PDS_RepoInfo{
 
 extern struct PDS_RepoInfo repo_handle;
 
-int pds_create(char *repo_name);
+int pds_create( char *repo_name);
 
 // pds_open
 // Open the data file and index file in rb+ mode
@@ -56,7 +57,9 @@ int put_rec_by_key( int key, void *rec );
 // Seek to the file location based on offset in index entry
 // Read the key at the current file location 
 // Read the record after reading the key
-int get_rec_by_key( int key, void *rec );
+int get_rec_by_ndx_key( int key, void *rec );
+
+int get_rec_by_non_ndx_key(void *key, void *rec, int (*matcher)(void *rec, void *key), int *io_count);
 
 // pds_close
 // Open the index file in wb mode (write mode, not append mode)

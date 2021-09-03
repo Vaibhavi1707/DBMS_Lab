@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 #include "pds.h"
 #include "contact.h"
@@ -28,7 +29,7 @@ void print_contact( struct Contact *c )
 // Use get_rec_by_key function to retrieve contact
 int search_contact( int contact_id, struct Contact *c )
 {
-	return get_rec_by_key( contact_id, c );
+	return get_rec_by_ndx_key( contact_id, c );
 }
 
 // Add the given contact into the repository by calling put_rec_by_key
@@ -45,5 +46,21 @@ int add_contact( struct Contact *c )
 	return status;
 }
 
+// Use get_rec_by_non_ndx_key function to retrieve contact
+// Hint: get_rec_by_ndx_key( phone, c, &match_contact_phone, io_count );
+int search_contact_by_phone( char *phone, struct Contact *c, int *io_count )
+{
+	// Call function
+}
 
+/* Return 0 if phone of the contact matches with phone parameter */
+/* Return 1 if phone of the contact does NOT match */
+/* Return > 1 in case of any other error */
+int match_contact_phone( void *rec, void *key )
+{
+	// Store the rec in a struct contact pointer
+    // Store the key in a char pointer
+    // Compare the phone values in key and record
+    // Return 0,1,>1 based on above condition
+}
 

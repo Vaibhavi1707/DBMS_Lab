@@ -123,13 +123,24 @@ int pds_get_nth_rec(int n, void *rec) {
         printf("File Ended. No such index\n");
         return PDS_FILE_ERROR;
     }
+
+    int i = 0; 
+
+    while (i < n - 1 && !feof(repo_handle.pds_data_fp)) {
+        int id;
+        fread(&id, sizeof(int), 1, repo_handle.pds_data_fp);
+        printf("%d\n", id);
+        int bytes = fread(rec, repo_handle.rec_size, 2, repo_handle.pds_data_fp);
+        printf("Bytes = %d\n", bytes);
+        
+        i ++;
+    }
     
-    fread(rec, repo_handle.rec_size, 1, repo_handle.pds_data_fp);
     return PDS_SUCCESS;
 }
 
 int get_rec_by_non_key(char* field, void* rec) {
-    
+
 }
 
 /**

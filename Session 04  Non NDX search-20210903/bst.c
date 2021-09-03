@@ -2,7 +2,6 @@
 #include <stdio.h>
 
 #include "bst.h"
-#include "pds.h"
 
 // Local functions
 static int place_bst_node( struct BST_Node *parent, struct BST_Node *node );
@@ -34,9 +33,8 @@ struct BST_Node *bst_search( struct BST_Node *root, int key )
 	if( root == NULL ){
 		return NULL;
 	}
-	else if( root->key == key ) {
+	else if( root->key == key )
 		return root;
-	}
 	else if( key < root->key )
 		return bst_search( root->left_child, key );
 	else if( key > root->key )
@@ -47,8 +45,7 @@ void bst_print( struct BST_Node *root )
 	if( root == NULL )
 		return;
 	else{
-		struct PDS_NdxInfo* ndx_info = root->data;
-		printf("%d %d %d\n", root->key, ndx_info->key, ndx_info->offset);
+		printf("%d ", root->key);
 		bst_print( root->left_child );
 		bst_print( root->right_child );
 	}
@@ -70,8 +67,8 @@ void bst_destroy( struct BST_Node *root )
 	if( root == NULL )
 		return;
 	else{
-		bst_free( root->left_child );
-		bst_free( root->right_child );
+		bst_destroy( root->left_child );
+		bst_destroy( root->right_child );
 		free(root->data);
 		free(root);
 	}

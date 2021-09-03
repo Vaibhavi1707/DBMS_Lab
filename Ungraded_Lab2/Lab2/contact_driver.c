@@ -19,8 +19,6 @@ int main()
 	struct Contact testContact1;
 	char *test_case_id;
 
-	char *repo_name1 = "start.dat";
-	pds_create(repo_name1);
 	// int status1, rec_size1;
 	struct Contact test1;
 
@@ -32,10 +30,6 @@ int main()
 	testContact.contact_id = 10000;
 	strcpy(testContact.contact_name, "dummy name");
 	strcpy(testContact.phone, "dummy number");
-
-	testContact1.contact_id = 10001;
-	strcpy(testContact1.contact_name, "dummy name");
-	strcpy(testContact1.phone, "dummy number");
 
 	rec_size = sizeof(struct Contact);
 
@@ -49,8 +43,6 @@ int main()
 		exit(status);
 	}
 
-	// read_file();
-
 	test_case_id = "02";
 	testContact.contact_id = 10000;
 	status = add_contact( &testContact );
@@ -59,15 +51,6 @@ int main()
 	else
 		TREPORT(test_case_id,"FAIL")
 
-	test_case_id = "14";
-	testContact.contact_id = 10000;
-	status = add_contact( &testContact1 );
-	if( status == CONTACT_SUCCESS )
-		TREPORT(test_case_id,"SUCCESS")
-	else
-		TREPORT(test_case_id,"FAIL")
-
-	// read_file();
 
 	test_case_id = "03";
 	testContact.contact_id = -1;
@@ -128,27 +111,6 @@ int main()
 		TREPORT(test_case_id,"SUCCESS")
 	else
 		TREPORT(test_case_id,"FAIL")
-
-	test_case_id = "09";
-	status = pds_close();
-	if( status == PDS_SUCCESS ){
-		TREPORT(test_case_id,"SUCCESS")
-	}
-	else{
-		TREPORT(test_case_id,"FAIL")
-		exit(status);
-	}
-
-	pds_create(repo_name1);
-
-	test_case_id = "10";
-	status = pds_open(repo_name1, rec_size);
-	if (status == PDS_SUCCESS) {
-		TREPORT(test_case_id, "SUCCESS");
-	}
-	else {
-		TREPORT(test_case_id, "FAIL");
-	}
 
 	test_case_id = "11";
 	status = add_contact(&test1);
