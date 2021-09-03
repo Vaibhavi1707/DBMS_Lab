@@ -51,6 +51,7 @@ int add_contact( struct Contact *c )
 int search_contact_by_phone( char *phone, struct Contact *c, int *io_count )
 {
 	// Call function
+	return get_rec_by_non_ndx_key(phone, c, &match_contact_phone, io_count);
 }
 
 /* Return 0 if phone of the contact matches with phone parameter */
@@ -59,8 +60,19 @@ int search_contact_by_phone( char *phone, struct Contact *c, int *io_count )
 int match_contact_phone( void *rec, void *key )
 {
 	// Store the rec in a struct contact pointer
-    // Store the key in a char pointer
-    // Compare the phone values in key and record
-    // Return 0,1,>1 based on above condition
+	struct Contact * contact = rec;
+    
+	// Store the key in a char pointer
+	char * contact_key = key;
+    
+	// Compare the phone values in key and record
+	// Return 0,1,>1 based on above condition
+	if (!key || !contact) {
+		return 2;
+	}
+	if (strcmp(contact_key, contact->phone) == 0) {
+		return 0;
+	}
+	return 1;
 }
 
