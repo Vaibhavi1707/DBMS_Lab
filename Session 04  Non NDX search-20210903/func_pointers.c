@@ -16,6 +16,8 @@ void f(void (*func)(int, int), int x, int y)
     func(x, y);
 }
 
+// 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
+
 int main() 
 {
     f(f1, 5, 10);
