@@ -47,10 +47,11 @@ int add_contact( struct Contact *c )
 }
 
 // Use get_rec_by_non_ndx_key function to retrieve contact
-// Hint: get_rec_by_non_ndx_key( phone, c, &match_contact_phone, io_count );
+// Hint: get_rec_by_ndx_key( phone, c, &match_contact_phone, io_count );
 int search_contact_by_phone( char *phone, struct Contact *c, int *io_count )
 {
 	// Call function
+	return get_rec_by_non_ndx_key(phone, c, &match_contact_phone, io_count);
 }
 
 /* Return 0 if phone of the contact matches with phone parameter */
@@ -59,14 +60,29 @@ int search_contact_by_phone( char *phone, struct Contact *c, int *io_count )
 int match_contact_phone( void *rec, void *key )
 {
 	// Store the rec in a struct contact pointer
-    // Store the key in a char pointer
-    // Compare the phone values in key and record
-    // Return 0,1,>1 based on above condition
+	struct Contact * contact = rec;
+    
+	// Store the key in a char pointer
+	char * contact_key = key;
+    
+	// Compare the phone values in key and record
+	// Return 0,1,>1 based on above condition
+	if (!key || !contact) {
+		return 2;
+	}
+	if (strcmp(contact_key, contact->phone) == 0) {
+		return 0;
+	}
+	return 1;
 }
 
 // Function to delete a record based on ndx_key
 int delete_contact ( int contact_id )
 {
 	// Call the delete_contact_ndx_key function
+	int status = delete_rec_by_ndx_key(contact_id);
+	
 	// Return CONTACT_SUCCESS or CONTACT_FAILURE based on status of above call
+	if (status == PDS_SUCCESS) return CONTACT_SUCCESS;
+	return CONTACT_FAILURE;
 }

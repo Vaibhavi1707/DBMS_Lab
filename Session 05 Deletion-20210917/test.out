@@ -1,0 +1,148 @@
+Test case: CREATE newdemo 0
+Status PASS: 
+
+Test case: OPEN newdemo 0
+Status PASS: 
+
+Test case: STORE 10000 0
+
+10000 deleted: 0
+Status PASS: 
+
+Test case: STORE 10001 0
+10000 deleted: 0
+
+10000 deleted: 0
+10001 deleted: 0
+Status PASS: 
+
+Test case: STORE 10002 0
+10000 deleted: 0
+10001 deleted: 0
+
+10000 deleted: 0
+10001 deleted: 0
+10002 deleted: 0
+Status PASS: 
+
+Test case: NDX_SEARCH 10000 0
+Key to retrieve: 10000Status PASS: 
+
+Test case: NDX_SEARCH 10000 0
+Key to retrieve: 10000Status PASS: 
+
+Test case: NDX_SEARCH 90000 1
+Status PASS: 
+
+Test case: NDX_DELETE 10000 0
+10000 deleted: 0
+10001 deleted: 0
+10002 deleted: 0
+
+10000 10000
+Status PASS: 
+
+Test case: NDX_DELETE 10000 1
+10000 deleted: 1
+10001 deleted: 0
+10002 deleted: 0
+
+10000 10000
+Status PASS: 
+
+Test case: NON_NDX_SEARCH Phone-of-10000 -1
+Status PASS: 
+
+Test case: NON_NDX_SEARCH Phone-of-10001 2
+Status PASS: 
+
+Test case: NON_NDX_SEARCH Phone-of-10002 3
+Status PASS: 
+
+Test case: CLOSE 0
+Key: 10001
+Key: 10002
+Status PASS: 
+
+Test case: OPEN newdemo 0
+10001 deleted: 0
+10002 deleted: 0
+Status PASS: 
+
+Test case: STORE 10003 0
+10001 deleted: 0
+10002 deleted: 0
+
+10001 deleted: 0
+10002 deleted: 0
+10003 deleted: 0
+Status PASS: 
+
+Test case: NDX_SEARCH 10003 0
+Key to retrieve: 10003Status PASS: 
+
+Test case: NON_NDX_SEARCH Phone-of-10003 4
+Status PASS: 
+
+Test case: NDX_DELETE 10003 0
+10001 deleted: 0
+10002 deleted: 0
+10003 deleted: 0
+
+10003 10003
+Status PASS: 
+
+Test case: NON_NDX_SEARCH Phone-of-10003 -1
+Status PASS: 
+
+Test case: NDX_SEARCH 10003 1
+Key to retrieve: 10003Status PASS: 
+
+Test case: CLOSE 0
+Key: 10001
+Key: 10002
+Status PASS: 
+
+Test case: OPEN newdemo 0
+10001 deleted: 0
+10002 deleted: 0
+Status PASS: 
+
+Test case: STORE 10003 0
+10001 deleted: 0
+10002 deleted: 0
+
+10001 deleted: 0
+10002 deleted: 0
+10003 deleted: 0
+Status PASS: 
+
+Test case: NDX_SEARCH 10003 0
+Key to retrieve: 10003Status PASS: 
+
+Test case: NDX_SEARCH 10001 0
+Key to retrieve: 10001Status PASS: 
+
+Test case: NDX_SEARCH 90000 1
+Status PASS: 
+
+Test case: NON_NDX_SEARCH Phone-of-10002 3
+Status PASS: 
+
+Test case: NDX_DELETE 10000 1
+Status PASS: 
+
+Test case: NDX_SEARCH 10000 1
+Status PASS: 
+
+Test case: NDX_SEARCH 90000 1
+Status PASS: 
+
+Test case: NDX_SEARCH 10003 0
+Key to retrieve: 10003Status PASS: 
+
+Test case: CLOSE 0
+Key: 10001
+Key: 10002
+Key: 10003
+Status PASS: 
