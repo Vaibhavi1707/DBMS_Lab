@@ -215,6 +215,9 @@ void process_line( char *test_case )
 			TREPORT("PASS", "");
 		}
 	}
+
+	
+
 	else if( !strcmp(command,"CLOSE") ){
 		if( !strcmp(param1,"0") )
 			expected_status = CONTACT_SUCCESS;
