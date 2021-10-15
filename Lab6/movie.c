@@ -38,9 +38,9 @@ int search_movie( int movie_id, struct Movie *movie )
 int add_movie( struct Movie *movie )
 {
 	int status;
-
+	printf("Putting the record\n");
 	status = put_rec_by_key( movie->id, movie );
-
+	printf("Record put\n");
 	if( status != PDS_SUCCESS ){
 		fprintf(stderr, "Unable to add movie with id %d. Error %d", movie->id, status );
 		return MOVIE_FAILURE;

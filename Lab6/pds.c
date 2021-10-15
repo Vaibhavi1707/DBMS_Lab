@@ -16,8 +16,10 @@ int pds_create(char *repo_name)
   strcpy(indexfile,repo_name);
   strcat(filename,".dat");
   strcat(indexfile,".ndx");
+
   FILE *fp = fopen(filename,"wb+");
   FILE *ifp = fopen(indexfile,"wb+");
+
   if(fp  == NULL || ifp == NULL) return PDS_FILE_ERROR;\
   fclose(fp);
   fclose(ifp);
@@ -83,6 +85,7 @@ while (!feof(repo_handle.pds_ndx_fp)) {
 
 int put_rec_by_key(int key, void*rec)
 {
+  printf("Heloo");
   // check repo_status
   if (repo_handle.repo_status == PDS_REPO_CLOSED)
       return PDS_REPO_CLOSED;
