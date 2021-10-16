@@ -31,16 +31,19 @@ void print_movie( struct Movie *movie )
 // Use get_rec_by_key function to retrieve movie
 int search_movie( int movie_id, struct Movie *movie )
 {
-	return get_rec_by_ndx_key( movie_id, movie );
+	int status = get_rec_by_ndx_key( movie_id, movie );
+
+	if (status == PDS_SUCCESS) return MOVIE_SUCCESS;
+	if (status == PDS_REC_NOT_FOUND) return MOVIE_NOT_FOUND;
+	return MOVIE_FAILURE;
 }
 
 // Add the given movie into the repository by calling put_rec_by_key
 int add_movie( struct Movie *movie )
 {
-	int status;
-	printf("Putting the record\n");
-	status = put_rec_by_key( movie->id, movie );
-	printf("Record put\n");
+	// printf("Putting the record\n");
+	int	status = put_rec_by_key( movie->id, movie );
+	// printf("Record put\n");
 	if( status != PDS_SUCCESS ){
 		fprintf(stderr, "Unable to add movie with id %d. Error %d", movie->id, status );
 		return MOVIE_FAILURE;
@@ -52,7 +55,15 @@ int add_movie( struct Movie *movie )
 int search_movie_by_name( char *name, struct Movie *movie, int *io_count )
 {
 	// Call function
-	return get_rec_by_non_ndx_key(name, movie, &match_movie_name, io_count);
+	int status = get_rec_by_non_ndx_key(name, movie, &match_movie_name, io_count);
+	
+	if (status == PDS_REC_NOT_FOUND) {
+		return MOVIE_NOT_FOUND;
+	}
+	if (status == PDS_SUCCESS) {
+		return MOVIE_SUCCESS;
+	}
+	return MOVIE_FAILURE;
 }
 
 /* Return 0 if phone of the movie matches with phone parameter */
@@ -85,6 +96,9 @@ int delete_movie ( int movie_id )
 	
 	// Return MOVIE_SUCCESS or MOVIE_FAILURE based on status of above call
 	if (status == PDS_SUCCESS) return MOVIE_SUCCESS;
+
+	if (status == PDS_REC_NOT_FOUND) return MOVIE_NOT_FOUND;
+
 	return MOVIE_FAILURE;
 }
 
@@ -92,5 +106,6 @@ int overwrite_movie(struct Movie *movie) {
 	int status = pds_overwrite(movie->id, movie);
 
 	if (status == PDS_SUCCESS) return MOVIE_SUCCESS;
+	if (status == PDS_REC_NOT_FOUND) return MOVIE_NOT_FOUND;
 	return MOVIE_FAILURE;
 }

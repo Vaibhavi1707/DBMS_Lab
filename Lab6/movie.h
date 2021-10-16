@@ -3,6 +3,7 @@
 
 #define MOVIE_SUCCESS 0
 #define MOVIE_FAILURE 1
+#define MOVIE_NOT_FOUND 4
  
 struct Movie{
 	int id;
