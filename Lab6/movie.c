@@ -45,7 +45,7 @@ int add_movie( struct Movie *movie )
 	int	status = put_rec_by_key( movie->id, movie );
 	// printf("Record put\n");
 	if( status != PDS_SUCCESS ){
-		fprintf(stderr, "Unable to add movie with id %d. Error %d", movie->id, status );
+		fprintf(stderr, "Unable to add movie with id %d. Error %d\n", movie->id, status );
 		return MOVIE_FAILURE;
 	}
 	return status;

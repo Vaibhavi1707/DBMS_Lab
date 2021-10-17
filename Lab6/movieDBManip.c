@@ -71,7 +71,7 @@ int searchMovieByID(char* dbname) {
 
     if (status == MOVIE_NOT_FOUND || status == MOVIE_FAILURE) return status;
 
-    printf("ID: %d\n NAME: %s\n YEAR: %d\n RATING: %f\n GENRE: %s\n LENGTH: %d\n",
+    printf("ID: %d\nNAME: %s\nYEAR: %d\nRATING: %f\nGENRE: %s\nLENGTH: %d minutes\n",
     foundMovie->id, foundMovie->name, foundMovie->year, foundMovie->star_rating,
     foundMovie->genre, foundMovie->length);
 
@@ -125,19 +125,22 @@ int updateMovie(char *dbname) {
 int searchMovieByName(char* dbname) {
     int rec_size = sizeof(struct Movie);
     pds_open(dbname, rec_size);
-    char name[30];
+    char name[27];
     printf("Enter name to be searched\n");
     scanf("%s", name);
 
     struct Movie* foundMovie = malloc(sizeof(struct Movie)); 
-    
-    int* iterCount;
+
+    int* iterCount = malloc(sizeof(int));
     *iterCount = 0; 
+
     int status = search_movie_by_name(name, foundMovie, iterCount);
+
+    
 
     if (status == MOVIE_NOT_FOUND || status == MOVIE_FAILURE) return status;
 
-    printf("ID: %d\n NAME: %s\n YEAR: %d\n RATING: %f\n GENRE: %s\n LENGTH: %d\n",
+    printf("ID: %d\nNAME: %s\nYEAR: %d\nRATING: %f\nGENRE: %s\nLENGTH: %d minutes\n",
     foundMovie->id, foundMovie->name, foundMovie->year, foundMovie->star_rating,
     foundMovie->genre, foundMovie->length);
 
@@ -165,8 +168,7 @@ int deleteMovieByID(char* dbname) {
     return MOVIE_SUCCESS;
 } 
 
-int processTask(int option) {
-    char dbname[50] = "moviedb";
+int processTask(int option, char* dbname) {
     switch(option) {
         case 1: {
             int status = pds_create(dbname);
@@ -191,13 +193,19 @@ int processTask(int option) {
 }
 
 int main() {
+    printf("===============================================================================\n");
+    printf("===============================================================================\n");
     show_options();
 
     int option;
     scanf("%d", &option);
 
     while (option != 0) {
-        int status = processTask(option);
+        printf("===============================================================================\n");
+        printf("===============================================================================\n");
+        
+        char dbname[27] = "moviedb";
+        int status = processTask(option, dbname);
 
         if (status == MOVIE_FAILURE) {
             printf("Error occured.\n");
@@ -212,6 +220,9 @@ int main() {
     }
 
     if (option != 1) pds_close();
+
+    printf("===============================================================================\n");
+    printf("===============================================================================\n");
 
     return 0;
 }

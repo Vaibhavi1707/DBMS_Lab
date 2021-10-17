@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
 
 	cfptr = (FILE *) fopen(argv[1], "r");
 	while(fgets(test_case, sizeof(test_case)-1, cfptr)){
-		// printf("line:%s",test_case);
 		if( !strcmp(test_case,"\n") || !strcmp(test_case,"") )
 			continue;
 		process_line( test_case );
@@ -38,26 +37,25 @@ void process_line( char *test_case )
 	struct Movie testMovie;
 
 	strcpy(testMovie.name, "dummy name");
-	// strcpy(expected_name, "dummy name");
-	// strcpy(expected_name, "dummy number");
-	
 
 	rec_size = sizeof(struct Movie);
 
 	sscanf(test_case, "%s%s%s", command, param1, param2);
 	printf("Test case: %s", test_case); fflush(stdout);
+
 	if( !strcmp(command,"CREATE") ){
 		strcpy(repo_name, param1);
+		
 		if( !strcmp(param2,"0") )
 			expected_status = MOVIE_SUCCESS;
 		else
 			expected_status = MOVIE_FAILURE;
 		
 		status = pds_create( repo_name );
-		if( status == expected_status ){
+		
+		if(status == expected_status){
 			TREPORT("PASS", "");
-		}
-		else{
+		} else {
 			sprintf(info,"pds_open returned status %d",status);
 			TREPORT("FAIL", info);
 		}
@@ -65,16 +63,19 @@ void process_line( char *test_case )
 
 	if( !strcmp(command,"OPEN") ){
 		strcpy(repo_name, param1);
+
 		if( !strcmp(param2,"0") )
 			expected_status = MOVIE_SUCCESS;
 		else
 			expected_status = MOVIE_FAILURE;
 
 		status = pds_open( repo_name, rec_size );
+		
 		if(status == PDS_SUCCESS)
 			status = MOVIE_SUCCESS;
 		else
 			status = MOVIE_FAILURE;
+		
 		if( status == expected_status ){
 			TREPORT("PASS", "");
 		}
@@ -83,29 +84,7 @@ void process_line( char *test_case )
 			TREPORT("FAIL", info);
 		}
 	}
-	else if( !strcmp(command,"STORE") ){
-		if( !strcmp(param2,"0") )
-			expected_status = MOVIE_SUCCESS;
-		else
-			expected_status = MOVIE_FAILURE;
 
-		sscanf(param1, "%d", &id);
-		testMovie.id = id;
-		sprintf(testMovie.name,"Name-of-%d",id);
-		// sprintf(testMovie.name,"Phone-of-%d",id);
-		status = add_movie( &testMovie );
-		if(status == PDS_SUCCESS)
-			status = MOVIE_SUCCESS;
-		else
-			status = MOVIE_FAILURE;
-		if( status == expected_status ){
-			TREPORT("PASS", "");
-		}
-		else{
-			sprintf(info,"add_movie returned status %d",status);
-			TREPORT("FAIL", info);
-		}
-	}
 	else if( !strcmp(command,"NDX_SEARCH") ){
 		if( strcmp(param2,"1") )
 			expected_status = MOVIE_SUCCESS;
@@ -113,27 +92,29 @@ void process_line( char *test_case )
 			expected_status = MOVIE_FAILURE;
 
 		sscanf(param1, "%d", &id);
+		
 		testMovie.id = -1;
 		status = search_movie( id, &testMovie );
+		
 		if(status == PDS_SUCCESS)
 			status = MOVIE_SUCCESS;
 		else
 			status = MOVIE_FAILURE;
+		
 		if( status != expected_status ){
 			sprintf(info,"search key: %d; Got status %d",id, status);
 			TREPORT("FAIL", info);
-		}
-		else{
+		} else {
 			// Check if the retrieved values match
-			if( expected_status == 0 ){
+			if(expected_status == 0){
 				sprintf(expected_name,"Name-of-%d",id);
 				// sprintf(expected_name,"Phone-of-%d",id);
 				if (testMovie.id == id && 
 					strcmp(testMovie.name,expected_name) == 0 &&
-					strcmp(testMovie.name,expected_name) == 0){
+					testMovie.year == 2001 && testMovie.star_rating == 4.5 
+					&& strcmp(testMovie.genre, "comedy") == 0 && testMovie.length == 120){
 						TREPORT("PASS", "");
-				}
-				else{
+				} else {
 					sprintf(info,"Movie data not matching... Expected:{%d,%s,%s} Got:{%d,%s,%s}\n",
 						id, expected_name, expected_name, 
 						testMovie.id, testMovie.name, testMovie.name
