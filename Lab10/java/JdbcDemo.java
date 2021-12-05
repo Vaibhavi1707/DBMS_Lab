@@ -1,11 +1,11 @@
 import java.sql.*;
 
 public class JdbcDemo {
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver"; // remove
-    static final String DB_URL = "jdbc:mysql://localhost/moviedb?useSSL=false"; // remove
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver"; 
+    static final String DB_URL = "jdbc:mysql://localhost/moviedb?useSSL=false"; 
 
-    static final String USER = "root"; // remove
-    static final String PASSWORD = "sharvari!13"; // remove
+    static final String USER = "root"; 
+    static final String PASSWORD = "sharvari!13"; 
 
     private Connection connectDB() 
     {
