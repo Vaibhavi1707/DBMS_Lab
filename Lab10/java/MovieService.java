@@ -19,7 +19,7 @@ public class MovieService {
     
         this.viewMovies(rs);
 
-        dbManager.closeConnection(stmt, rs);
+        dbManager.closeStatement(stmt, rs);
     } 
 
     public void viewMovies(ResultSet rs) {

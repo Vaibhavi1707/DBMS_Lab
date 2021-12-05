@@ -2,7 +2,7 @@ import java.sql.*;
 
 public class DBManager {
     static final String DB_URL = "jdbc:mysql://localhost/moviedb?useSSL=false"; 
-
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String USER = "root"; 
     static final String PASSWORD = "sharvari!13";
 
@@ -11,9 +11,10 @@ public class DBManager {
     public DBManager() 
     {
         try {
+            Class.forName(JDBC_DRIVER);
             this.conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-        } catch (SQLException se) {
-            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -44,11 +45,10 @@ public class DBManager {
         return rs;
     }
 
-    public void closeConnection(Statement stmt, ResultSet rs) {
+    public void closeStatement(Statement stmt, ResultSet rs) {
         try {
             rs.close();
             stmt.close();
-            this.conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
@@ -60,7 +60,17 @@ public class DBManager {
             } catch (SQLException se2) {
                 se2.printStackTrace();
             }
+        }
+    }
 
+    public void closeConnection() {
+        try {
+            this.conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
                 if (conn != null)
                    this.conn.close();
@@ -68,5 +78,5 @@ public class DBManager {
                 se3.printStackTrace();
             }
         }
-    }
+    } 
 }
