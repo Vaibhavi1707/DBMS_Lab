@@ -45,9 +45,31 @@ public class DBManager {
         return rs;
     }
 
-    public void closeStatement(Statement stmt, ResultSet rs) {
+    public boolean doUpdateQuery(Statement stmt, String query) {
+        boolean status = false;
+
+        try {
+            status = stmt.execute(query);
+        } catch (SQLException se) {
+            se.printStackTrace();
+            System.exit(1);
+        }
+
+        return status;
+    }
+
+    public void closeResultSet(ResultSet rs) {
         try {
             rs.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeStatement(Statement stmt) {
+        try {
             stmt.close();
         } catch (SQLException se) {
             se.printStackTrace();
